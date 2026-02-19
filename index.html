@@ -1,0 +1,1525 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI研究会 設置提案 | 埼玉県社会保険労務士会 熊谷支部</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Noto+Serif+JP:wght@400;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --navy: #f0faf3;
+            --navy-mid: #e2f5e8;
+            --navy-light: #c8ebd4;
+            --gold: #c8973a;
+            --gold-light: #e8b45a;
+            --gold-pale: #7a4f1a;
+            --teal: #1a6b3a;
+            --white: #1a3a26;
+            --slate: #4a7060;
+            --text: #2a4a38;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Zen Kaku Gothic New', sans-serif;
+            background: var(--navy);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        /* ===== NOISE TEXTURE OVERLAY ===== */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.4;
+        }
+
+        /* ===== NAV ===== */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(240, 250, 243, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(200, 151, 58, 0.2);
+        }
+
+        .nav-logo {
+            font-family: 'Noto Serif JP', serif;
+            font-size: 0.85rem;
+            color: var(--gold);
+            letter-spacing: 0.05em;
+        }
+
+        .nav-cta {
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            color: var(--navy);
+            border: none;
+            padding: 0.6rem 1.4rem;
+            border-radius: 4px;
+            font-family: 'Zen Kaku Gothic New', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease;
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(200, 151, 58, 0.4);
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(ellipse 80% 60% at 50% 0%, rgba(180, 230, 200, 0.8) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 40% at 80% 80%, rgba(200, 151, 58, 0.08) 0%, transparent 60%),
+                linear-gradient(180deg, var(--navy) 0%, var(--navy-mid) 100%);
+        }
+
+        .hero-grid {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(80, 160, 100, 0.06) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(80, 160, 100, 0.06) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+        }
+
+        .hero-tag {
+            display: inline-block;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            padding: 0.4rem 1.2rem;
+            border-radius: 2px;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeUp 0.8s 0.2s forwards;
+        }
+
+        .hero-title {
+            font-family: 'Noto Serif JP', serif;
+            font-size: clamp(2.4rem, 6vw, 5rem);
+            line-height: 1.2;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: fadeUp 0.8s 0.4s forwards;
+        }
+
+        .hero-title .accent {
+            color: var(--gold);
+            display: block;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: var(--slate);
+            line-height: 1.9;
+            max-width: 680px;
+            margin: 0 auto 3rem;
+            opacity: 0;
+            animation: fadeUp 0.8s 0.6s forwards;
+        }
+
+        .hero-video {
+            width: 100%;
+            max-width: 780px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(200, 151, 58, 0.25);
+            box-shadow: 0 40px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(200,151,58,0.1);
+            opacity: 0;
+            animation: fadeUp 0.8s 0.8s forwards;
+            margin: 0 auto;
+        }
+
+        .hero-video video {
+            width: 100%;
+            display: block;
+        }
+
+        /* ===== SCROLL INDICATOR ===== */
+        .scroll-hint {
+            position: absolute;
+            bottom: 2.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--slate);
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            z-index: 2;
+            animation: fadeIn 1.5s 1.5s forwards;
+            opacity: 0;
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, var(--gold), transparent);
+            animation: scrollDrop 1.5s infinite;
+        }
+
+        /* ===== PROBLEM SECTION ===== */
+        .section {
+            padding: 8rem 2rem;
+            position: relative;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            font-size: 0.7rem;
+            letter-spacing: 0.3em;
+            color: var(--gold);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .section-title {
+            font-family: 'Noto Serif JP', serif;
+            font-size: clamp(1.8rem, 4vw, 3rem);
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-body {
+            color: var(--slate);
+            font-size: 1.05rem;
+            line-height: 2;
+        }
+
+        /* ===== ALERT BOX ===== */
+        .alert-box {
+            background: rgba(200, 151, 58, 0.08);
+            border: 1px solid rgba(200, 151, 58, 0.35);
+            border-left: 4px solid var(--gold);
+            border-radius: 8px;
+            padding: 1.5rem 2rem;
+            margin: 2.5rem 0;
+        }
+
+        .alert-box p {
+            color: var(--gold-pale);
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+
+        .alert-box strong {
+            color: var(--gold-light);
+        }
+
+        /* ===== DIVIDER ===== */
+        .divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(200, 151, 58, 0.3), transparent);
+            margin: 0 2rem;
+        }
+
+        /* ===== INFOGRAPHIC SECTION ===== */
+        .infographic-section {
+            padding: 6rem 2rem;
+            position: relative;
+        }
+
+        .infographic-section .inner {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .infographic-img {
+            width: 100%;
+            border-radius: 16px;
+            border: 1px solid rgba(200, 151, 58, 0.2);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            display: block;
+            margin-top: 3rem;
+        }
+
+        /* ===== THREE PILLARS ===== */
+        .pillars-section {
+            padding: 6rem 2rem;
+            background: linear-gradient(180deg, transparent, rgba(200, 235, 210, 0.3), transparent);
+        }
+
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1100px;
+            margin: 3rem auto 0;
+        }
+
+        .pillar-card {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(100, 180, 130, 0.25);
+            border-radius: 12px;
+            padding: 2.5rem;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pillar-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(200, 151, 58, 0.05), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .pillar-card:hover {
+            border-color: rgba(200, 151, 58, 0.4);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .pillar-card:hover::before { opacity: 1; }
+
+        .pillar-num {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 4rem;
+            color: rgba(200, 151, 58, 0.15);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.05em;
+        }
+
+        .pillar-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .pillar-title {
+            font-family: 'Noto Serif JP', serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 1rem;
+        }
+
+        .pillar-body {
+            color: var(--slate);
+            font-size: 0.95rem;
+            line-height: 1.9;
+        }
+
+        .pillar-highlight {
+            display: inline-block;
+            background: rgba(200, 151, 58, 0.15);
+            color: var(--gold-light);
+            font-size: 0.8rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 2px;
+            margin-top: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+
+        /* ===== CHART SECTION ===== */
+        .chart-section {
+            padding: 6rem 2rem;
+        }
+
+        .chart-wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .chart-wrapper { grid-template-columns: 1fr; gap: 2rem; }
+        }
+
+        .chart-box {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(100, 180, 130, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+
+        .chart-box canvas {
+            max-height: 360px;
+        }
+
+        .chart-toggle {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .toggle-btn {
+            padding: 0.4rem 1rem;
+            border: 1px solid rgba(200, 151, 58, 0.3);
+            background: transparent;
+            color: var(--slate);
+            font-family: 'Zen Kaku Gothic New', sans-serif;
+            font-size: 0.85rem;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .toggle-btn.active {
+            background: var(--gold);
+            color: var(--navy);
+            font-weight: 700;
+            border-color: var(--gold);
+        }
+
+        /* ===== STEP FLOW ===== */
+        .flow-section {
+            padding: 6rem 2rem;
+            background: rgba(200, 235, 210, 0.3);
+        }
+
+        .flow-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .flow-steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+            margin-top: 4rem;
+            position: relative;
+        }
+
+        @media (max-width: 768px) {
+            .flow-steps { grid-template-columns: 1fr; }
+        }
+
+        .flow-step {
+            text-align: center;
+            padding: 2.5rem 2rem;
+            position: relative;
+        }
+
+        .flow-step:not(:last-child)::after {
+            content: '→';
+            position: absolute;
+            right: -0.5rem;
+            top: 3rem;
+            font-size: 1.5rem;
+            color: var(--gold);
+            opacity: 0.4;
+        }
+
+        @media (max-width: 768px) {
+            .flow-step:not(:last-child)::after { content: '↓'; right: auto; left: 50%; top: auto; bottom: -1rem; transform: translateX(-50%); }
+        }
+
+        .step-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 2px solid var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 1.8rem;
+            background: rgba(200, 151, 58, 0.08);
+            position: relative;
+        }
+
+        .step-num {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 24px;
+            height: 24px;
+            background: var(--gold);
+            color: var(--navy);
+            border-radius: 50%;
+            font-size: 0.7rem;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .step-title {
+            font-family: 'Noto Serif JP', serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 1rem;
+        }
+
+        .step-body {
+            color: var(--slate);
+            font-size: 0.9rem;
+            line-height: 1.9;
+        }
+
+        /* ===== SIMULATION CHART ===== */
+        .sim-section {
+            padding: 6rem 2rem;
+        }
+
+        .sim-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .sim-inner { grid-template-columns: 1fr; }
+        }
+
+        .sim-legend {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            margin-top: 2rem;
+        }
+
+        .sim-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .sim-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 2rem;
+            font-size: 0.85rem;
+        }
+
+        .sim-table th, .sim-table td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid rgba(200, 151, 58, 0.1);
+            text-align: center;
+        }
+
+        .sim-table th {
+            color: var(--gold);
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+        }
+
+        .sim-table td.highlight {
+            color: #22c55e;
+            font-weight: 700;
+        }
+
+        .sim-table td.low { color: var(--slate); }
+
+        /* ===== AUDIO PLAYER ===== */
+        .audio-section {
+            padding: 4rem 2rem;
+        }
+
+        .audio-inner {
+            max-width: 780px;
+            margin: 0 auto;
+        }
+
+        .audio-card {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(100, 180, 130, 0.3);
+            border-radius: 16px;
+            padding: 2.5rem;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        @media (max-width: 600px) {
+            .audio-card { flex-direction: column; text-align: center; }
+        }
+
+        .audio-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--navy);
+            flex-shrink: 0;
+        }
+
+        .audio-info { flex: 1; }
+
+        .audio-title {
+            font-family: 'Noto Serif JP', serif;
+            font-size: 1.1rem;
+            color: var(--white);
+            margin-bottom: 0.5rem;
+        }
+
+        .audio-subtitle {
+            color: var(--slate);
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+
+        audio {
+            width: 100%;
+            height: 36px;
+            accent-color: var(--gold);
+        }
+
+        audio::-webkit-media-controls-panel {
+            background: rgba(17, 34, 64, 0.8);
+        }
+
+        /* ===== QA SECTION ===== */
+        .qa-section {
+            padding: 6rem 2rem;
+            background: rgba(200, 235, 210, 0.3);
+        }
+
+        .qa-inner {
+            max-width: 780px;
+            margin: 0 auto;
+        }
+
+        .qa-item {
+            border-bottom: 1px solid rgba(200, 151, 58, 0.1);
+        }
+
+        .qa-question {
+            width: 100%;
+            text-align: left;
+            padding: 1.8rem 0;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+            color: var(--text);
+            font-family: 'Zen Kaku Gothic New', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .qa-q-num {
+            color: var(--gold);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+            margin-top: -2px;
+        }
+
+        .qa-q-text { flex: 1; line-height: 1.6; }
+
+        .qa-arrow {
+            color: var(--gold);
+            font-size: 1rem;
+            transition: transform 0.3s;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .qa-arrow.open { transform: rotate(180deg); }
+
+        .qa-answer {
+            display: none;
+            padding: 0 0 2rem 2.5rem;
+            color: var(--slate);
+            font-size: 0.95rem;
+            line-height: 2;
+        }
+
+        .qa-answer strong { color: var(--white); }
+
+        /* ===== CTA ===== */
+        .cta-section {
+            padding: 8rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(180deg, var(--navy-mid), var(--navy));
+        }
+
+        .cta-bg {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 70% 70% at 50% 50%, rgba(200, 151, 58, 0.06) 0%, transparent 70%);
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 2;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .cta-title {
+            font-family: 'Noto Serif JP', serif;
+            font-size: clamp(1.8rem, 4vw, 3rem);
+            font-weight: 700;
+            line-height: 1.4;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-title .gold { color: var(--gold); }
+
+        .cta-body {
+            color: var(--slate);
+            font-size: 1.05rem;
+            line-height: 2;
+            margin-bottom: 3rem;
+        }
+
+        .cta-box {
+            background: rgba(200, 151, 58, 0.08);
+            border: 1px solid rgba(200, 151, 58, 0.3);
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .cta-proposer {
+            color: var(--gold-pale);
+            font-size: 0.95rem;
+            line-height: 2;
+        }
+
+        .cta-proposer strong {
+            color: var(--gold-light);
+            font-size: 1.05rem;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            border-top: 1px solid rgba(100, 180, 130, 0.2);
+            padding: 2rem;
+            text-align: center;
+            color: var(--slate);
+            font-size: 0.8rem;
+            background: var(--navy-mid);
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes scrollDrop {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.2; transform: scaleY(0.5); transform-origin: top; }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+
+        /* ===== SECTION BG LABELS ===== */
+        .big-label {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(5rem, 12vw, 10rem);
+            color: rgba(80, 160, 100, 0.07);
+            letter-spacing: 0.1em;
+            position: absolute;
+            top: 2rem;
+            right: 0;
+            pointer-events: none;
+            user-select: none;
+            line-height: 1;
+        }
+
+        /* ===== STATS BAR ===== */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            max-width: 1100px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(100, 180, 130, 0.25);
+            border-radius: 12px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+        }
+
+        .stat-num {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3.5rem;
+            color: var(--gold);
+            letter-spacing: 0.05em;
+            line-height: 1;
+        }
+
+        .stat-unit {
+            font-size: 1.2rem;
+            color: var(--gold-light);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--slate);
+            margin-top: 0.5rem;
+            letter-spacing: 0.05em;
+        }
+
+        /* ===== PDF DOWNLOAD BUTTON ===== */
+        .pdf-dl-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 1.2rem;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            color: var(--navy);
+            text-decoration: none;
+            padding: 1.2rem 2.5rem;
+            border-radius: 8px;
+            font-family: 'Zen Kaku Gothic New', sans-serif;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 24px rgba(200, 151, 58, 0.3);
+            margin-top: 1rem;
+        }
+
+        .pdf-dl-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px rgba(200, 151, 58, 0.45);
+        }
+
+        .pdf-dl-icon { font-size: 1.8rem; }
+
+        .pdf-dl-text {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+
+        .pdf-dl-label {
+            font-size: 1rem;
+            letter-spacing: 0.05em;
+        }
+
+        .pdf-dl-sub {
+            font-size: 0.75rem;
+            opacity: 0.7;
+            font-weight: 400;
+            margin-top: 0.2rem;
+        }
+
+        .pdf-dl-arrow {
+            font-size: 1.4rem;
+            margin-left: 0.5rem;
+        }
+
+        /* ===== HORIZONTAL RULE ===== */
+        .gold-line {
+            width: 40px;
+            height: 3px;
+            background: var(--gold);
+            margin: 1.5rem 0;
+        }
+
+        .gold-line.center { margin-left: auto; margin-right: auto; }
+    </style>
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav>
+        <div class="nav-logo">埼玉県社会保険労務士会 熊谷支部</div>
+        <button class="nav-cta" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">提案書を確認する</button>
+    </nav>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-grid"></div>
+        <div class="hero-content">
+            <div class="hero-tag">令和の社労士業務革新 ｜ 支部内組織 設置提案書 ｜ 提案者：新井　健司</div>
+            <h1 class="hero-title">
+                AIを「脅威」ではなく<br>
+                <span class="accent">「最強のパートナー」へ</span>
+            </h1>
+            <p class="hero-subtitle">
+                生成AI技術を社労士業務の強力なパートナーとして再定義し、<br>
+                会員の競争力強化と地域中小企業のDX推進に貢献する<br>
+                「AI研究会」の設置を提案します。
+            </p>
+            <div class="hero-video">
+                <video controls poster="">
+                    <source src="AIを脅威ではなく最強のパートナーへ_send.mp4" type="video/mp4">
+                    お使いのブラウザは動画に対応していません。
+                </video>
+            </div>
+        </div>
+        <div class="scroll-hint">
+            <span>SCROLL</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- ===== PRESENTATION VIDEO (ヘッダー直下) ===== -->
+    <section style="padding: 3rem 2rem 0;">
+        <div style="max-width:780px; margin:0 auto;">
+            <div class="section-label reveal" style="text-align:center; margin-bottom:1.5rem;">PRESENTATION VIDEO</div>
+            <div class="hero-video reveal" style="margin:0 auto;">
+                <video controls>
+                    <source src="AI研究会設置提案_1.mp4" type="video/mp4">
+                    お使いのブラウザは動画に対応していません。
+                </video>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== STATS ROW ===== -->
+    <div class="stats-row">
+        <div class="stat-card reveal">
+            <div class="stat-num">5<span class="stat-unit">年</span></div>
+            <div class="stat-label">収益性 最大2倍を目指す期間</div>
+        </div>
+        <div class="stat-card reveal reveal-delay-1">
+            <div class="stat-num">80<span class="stat-unit">%</span></div>
+            <div class="stat-label">AI活用後のコンサルティング業務比率</div>
+        </div>
+        <div class="stat-card reveal reveal-delay-2">
+            <div class="stat-num">90<span class="stat-unit">%</span></div>
+            <div class="stat-label">AI活用後の顧客提供価値向上</div>
+        </div>
+        <div class="stat-card reveal reveal-delay-3">
+            <div class="stat-num">85<span class="stat-unit">%</span></div>
+            <div class="stat-label">AI活用後の顧問料単価水準</div>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ===== WHY NOW ===== -->
+    <section class="section" style="position:relative; overflow:hidden;">
+        <div class="big-label">WHY</div>
+        <div class="section-label reveal">BACKGROUND</div>
+        <h2 class="section-title reveal">なぜ今、<br>AI研究会が必要なのか</h2>
+        <div class="gold-line reveal"></div>
+        <p class="section-body reveal" style="max-width:680px;">
+            現在、労働法制の複雑化や人手不足の深刻化により、社労士に求められる役割は
+            <strong style="color:var(--white)">「手続き代行」から「高度なコンサルティング」</strong>へとシフトしています。<br><br>
+            一方で、生成AIの活用は個々の先生方の判断に委ねられており、
+            <strong style="color:var(--white)">活用格差（デジタル・デバイド）</strong>が生じつつあります。
+        </p>
+        <div class="alert-box reveal">
+            <p>⚠️ <strong>このままでは会員の競争力低下を招きます。</strong><br>
+            支部として体系的に学び、ナレッジを共有する場が不可欠です。<br>
+            AI研究会はその「知的インフラ」となります。</p>
+        </div>
+    </section>
+
+    <!-- ===== INFOGRAPHIC ===== -->
+    <section class="infographic-section">
+        <div class="inner">
+            <div class="section-label reveal" style="text-align:center">OVERVIEW</div>
+            <h2 class="section-title reveal" style="text-align:center; max-width:700px; margin:0 auto">
+                業務構造の劇的転換と<br>収益の最大化
+            </h2>
+            <img src="unnamed__34_.png" alt="AI研究会 概要インフォグラフィック" class="infographic-img reveal">
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ===== THREE PILLARS ===== -->
+    <section class="pillars-section">
+        <div style="text-align:center; max-width:1100px; margin:0 auto;">
+            <div class="section-label reveal">3 PILLARS</div>
+            <h2 class="section-title reveal">AI研究会の目的と<br>目指す姿</h2>
+            <div class="gold-line center reveal"></div>
+            <p class="section-body reveal">単なるツールの操作習得ではなく、実益に直結する3つの柱</p>
+        </div>
+        <div class="pillars-grid">
+            <div class="pillar-card reveal">
+                <div class="pillar-num">01</div>
+                <div class="pillar-icon">⏳</div>
+                <h3 class="pillar-title">リテラシーの底上げ</h3>
+                <p class="pillar-body">
+                    書類作成補助・法規リサーチ等の効率化により、
+                    高付加価値業務への時間を創出します。
+                    AIを「使える」会員の底上げが第一の目標です。
+                </p>
+                <span class="pillar-highlight">定型業務 90% → 30% へ</span>
+            </div>
+            <div class="pillar-card reveal reveal-delay-1">
+                <div class="pillar-num">02</div>
+                <div class="pillar-icon">💡</div>
+                <h3 class="pillar-title">付加価値の創造</h3>
+                <p class="pillar-body">
+                    人事データ分析・採用支援等、顧問先へ還元できる
+                    新たなナレッジを蓄積・共同開発します。
+                    AIは新たなメニュー開発の武器になります。
+                </p>
+                <span class="pillar-highlight">顧客提供価値 30% → 90% へ</span>
+            </div>
+            <div class="pillar-card reveal reveal-delay-2">
+                <div class="pillar-num">03</div>
+                <div class="pillar-icon">💴</div>
+                <h3 class="pillar-title">収益性の向上</h3>
+                <p class="pillar-body">
+                    AI導入支援や高度コンサルティングをメニュー化し、
+                    顧問料の適正な引き上げに繋げます。
+                    「選ばれる社労士」としてのブランドを確立します。
+                </p>
+                <span class="pillar-highlight">顧問料単価 40% → 85% へ</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== ACTIVITY FLOW ===== -->
+    <section class="flow-section">
+        <div class="flow-inner">
+            <div class="section-label reveal" style="text-align:center">HOW IT WORKS</div>
+            <h2 class="section-title reveal" style="text-align:center">活動内容と運営の「型」</h2>
+            <div class="gold-line center reveal"></div>
+            <p class="section-body reveal" style="text-align:center; max-width:640px; margin:0 auto;">
+                「教わる」場ではなく、実務を持ち寄り支部全体で<br>
+                知見を循環させる<strong style="color:var(--white)">「実践共有型」</strong>の運営
+            </p>
+
+            <div class="flow-steps">
+                <div class="flow-step reveal">
+                    <div class="step-circle">
+                        💬
+                        <span class="step-num">1</span>
+                    </div>
+                    <h3 class="step-title">実践共有会</h3>
+                    <p class="step-body">
+                        月1回・任意参加。成功事例だけでなく
+                        AIの誤答・失敗談も共有。
+                        売り込み禁止、心理的安全性を確保。
+                    </p>
+                </div>
+                <div class="flow-step reveal reveal-delay-1">
+                    <div class="step-circle">
+                        📋
+                        <span class="step-num">2</span>
+                    </div>
+                    <h3 class="step-title">モデル構築</h3>
+                    <p class="step-body">
+                        顧問先企業のバックオフィスへの
+                        AI導入モデルを会員で共同開発。
+                        再現性ある「型」を蓄積する。
+                    </p>
+                </div>
+                <div class="flow-step reveal reveal-delay-2">
+                    <div class="step-circle" style="border-color:var(--gold-light); background:rgba(200,151,58,0.15)">
+                        🚀
+                        <span class="step-num" style="background:var(--gold-light)">3</span>
+                    </div>
+                    <h3 class="step-title">実務還元</h3>
+                    <p class="step-body">
+                        得られたナレッジを各会員が持ち帰り
+                        顧問先へ提供。地域企業のDXを
+                        牽引し信頼を構築する。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== RADAR CHART ===== -->
+    <section class="chart-section">
+        <div class="chart-wrapper">
+            <div class="reveal">
+                <div class="section-label">TRANSFORMATION</div>
+                <h2 class="section-title">社労士業務の<br>質的転換</h2>
+                <div class="gold-line"></div>
+                <p class="section-body" style="margin-bottom:2rem;">
+                    グラフを切り替えることで、AI活用前後の
+                    業務比重の変化を視覚的に確認できます。
+                    コンサルティング・データ分析・顧客価値が
+                    劇的に向上します。
+                </p>
+                <div style="background:rgba(255,255,255,0.8); border:1px solid rgba(100,180,130,0.25); border-radius:12px; padding:1.8rem; box-shadow:0 4px 20px rgba(0,0,0,0.06);">
+                    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0; font-size:0.75rem; font-weight:700; color:#4a7060; letter-spacing:0.08em; padding-bottom:0.8rem; border-bottom:2px solid rgba(100,180,130,0.3); margin-bottom:1rem;">
+                        <span>評価軸</span>
+                        <span style="text-align:center; color:#94a3b8;">現在</span>
+                        <span style="text-align:center; color:#16a34a;">AI活用後</span>
+                    </div>
+                    <!-- 手続き業務量 -->
+                    <div style="margin-bottom:1.1rem;">
+                        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; align-items:center; margin-bottom:0.4rem;">
+                            <span style="font-size:0.82rem; font-weight:700; color:#2a4a38;">手続き業務量</span>
+                            <span style="text-align:center; font-weight:700; color:#94a3b8; font-size:0.9rem;">90%</span>
+                            <span style="text-align:center; font-weight:700; color:#16a34a; font-size:0.9rem;">30% ↓</span>
+                        </div>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
+                            <div style="height:6px; background:#e2e8f0; border-radius:3px; overflow:hidden;"><div style="width:90%; height:100%; background:#94a3b8; border-radius:3px;"></div></div>
+                            <div style="height:6px; background:#dcfce7; border-radius:3px; overflow:hidden;"><div style="width:30%; height:100%; background:#16a34a; border-radius:3px;"></div></div>
+                        </div>
+                    </div>
+                    <!-- コンサルティング -->
+                    <div style="margin-bottom:1.1rem;">
+                        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; align-items:center; margin-bottom:0.4rem;">
+                            <span style="font-size:0.82rem; font-weight:700; color:#2a4a38;">コンサルティング</span>
+                            <span style="text-align:center; font-weight:700; color:#94a3b8; font-size:0.9rem;">20%</span>
+                            <span style="text-align:center; font-weight:700; color:#16a34a; font-size:0.9rem;">80% ↑</span>
+                        </div>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
+                            <div style="height:6px; background:#e2e8f0; border-radius:3px; overflow:hidden;"><div style="width:20%; height:100%; background:#94a3b8; border-radius:3px;"></div></div>
+                            <div style="height:6px; background:#dcfce7; border-radius:3px; overflow:hidden;"><div style="width:80%; height:100%; background:#16a34a; border-radius:3px;"></div></div>
+                        </div>
+                    </div>
+                    <!-- データ分析力 -->
+                    <div style="margin-bottom:1.1rem;">
+                        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; align-items:center; margin-bottom:0.4rem;">
+                            <span style="font-size:0.82rem; font-weight:700; color:#2a4a38;">データ分析力</span>
+                            <span style="text-align:center; font-weight:700; color:#94a3b8; font-size:0.9rem;">10%</span>
+                            <span style="text-align:center; font-weight:700; color:#16a34a; font-size:0.9rem;">75% ↑</span>
+                        </div>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
+                            <div style="height:6px; background:#e2e8f0; border-radius:3px; overflow:hidden;"><div style="width:10%; height:100%; background:#94a3b8; border-radius:3px;"></div></div>
+                            <div style="height:6px; background:#dcfce7; border-radius:3px; overflow:hidden;"><div style="width:75%; height:100%; background:#16a34a; border-radius:3px;"></div></div>
+                        </div>
+                    </div>
+                    <!-- 顧客提供価値 -->
+                    <div style="margin-bottom:1.1rem;">
+                        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; align-items:center; margin-bottom:0.4rem;">
+                            <span style="font-size:0.82rem; font-weight:700; color:#2a4a38;">顧客提供価値</span>
+                            <span style="text-align:center; font-weight:700; color:#94a3b8; font-size:0.9rem;">30%</span>
+                            <span style="text-align:center; font-weight:700; color:#16a34a; font-size:0.9rem;">90% ↑</span>
+                        </div>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
+                            <div style="height:6px; background:#e2e8f0; border-radius:3px; overflow:hidden;"><div style="width:30%; height:100%; background:#94a3b8; border-radius:3px;"></div></div>
+                            <div style="height:6px; background:#dcfce7; border-radius:3px; overflow:hidden;"><div style="width:90%; height:100%; background:#16a34a; border-radius:3px;"></div></div>
+                        </div>
+                    </div>
+                    <!-- 顧問料単価 -->
+                    <div>
+                        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; align-items:center; margin-bottom:0.4rem;">
+                            <span style="font-size:0.82rem; font-weight:700; color:#2a4a38;">顧問料単価</span>
+                            <span style="text-align:center; font-weight:700; color:#94a3b8; font-size:0.9rem;">40%</span>
+                            <span style="text-align:center; font-weight:700; color:#16a34a; font-size:0.9rem;">85% ↑</span>
+                        </div>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
+                            <div style="height:6px; background:#e2e8f0; border-radius:3px; overflow:hidden;"><div style="width:40%; height:100%; background:#94a3b8; border-radius:3px;"></div></div>
+                            <div style="height:6px; background:#dcfce7; border-radius:3px; overflow:hidden;"><div style="width:85%; height:100%; background:#16a34a; border-radius:3px;"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="reveal reveal-delay-1">
+                <div class="chart-box">
+                    <div class="chart-toggle">
+                        <button class="toggle-btn active" id="btn-now" onclick="switchRadar('now')">現在</button>
+                        <button class="toggle-btn" id="btn-ai" onclick="switchRadar('ai')">AI活用後</button>
+                    </div>
+                    <canvas id="radarChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== AUDIO ===== -->
+    <section class="audio-section">
+        <div class="audio-inner reveal">
+            <div class="section-label" style="text-align:center; margin-bottom:1.5rem;">AUDIO MESSAGE</div>
+            <div class="audio-card">
+                <div class="audio-icon">🎧</div>
+                <div class="audio-info">
+                    <div class="audio-title">社労士AI生存戦略</div>
+                    <div class="audio-subtitle">音声でもご確認いただけます</div>
+                    <audio controls>
+                        <source src="社労士AI生存戦略_send.m4a" type="audio/mp4">
+                        お使いのブラウザは音声に対応していません。
+                    </audio>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ===== SIMULATION ===== -->
+    <section class="sim-section">
+        <div class="sim-inner">
+            <div class="reveal">
+                <div class="section-label">SIMULATION</div>
+                <h2 class="section-title">長期的価値の<br>シミュレーション</h2>
+                <div class="gold-line"></div>
+                <p class="section-body">
+                    AI研究会への参加有無で、5年後の収益性は
+                    大きく分岐します。今行動することが、
+                    「選ばれる社労士」への最短ルートです。
+                </p>
+                <div class="sim-legend">
+                    <div class="sim-legend-item">
+                        <div class="legend-dot" style="background:#94a3b8"></div>
+                        <span style="color:var(--slate)">現状維持（定型業務中心）</span>
+                    </div>
+                    <div class="sim-legend-item">
+                        <div class="legend-dot" style="background:#22c55e"></div>
+                        <span style="color:var(--white); font-weight:700">AI研究会参加（高付加価値化）</span>
+                    </div>
+                </div>
+                <table class="sim-table">
+                    <thead>
+                        <tr>
+                            <th>時点</th>
+                            <th>現状維持</th>
+                            <th>AI研究会参加</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>現在</td><td class="low">100%</td><td class="highlight">100%</td></tr>
+                        <tr><td>1年後</td><td class="low">100%</td><td class="highlight">110%</td></tr>
+                        <tr><td>2年後</td><td class="low">95%</td><td class="highlight">125%</td></tr>
+                        <tr><td>3年後</td><td class="low">90%</td><td class="highlight">145%</td></tr>
+                        <tr><td>4年後</td><td class="low">85%</td><td class="highlight">170%</td></tr>
+                        <tr><td>5年後</td><td class="low">80%</td><td class="highlight" style="font-size:1.1rem">200%</td></tr>
+                    </tbody>
+                </table>
+                <p style="font-size:0.75rem; color:var(--slate); margin-top:0.5rem;">※上記数値はイメージです。個々の状況により異なります。</p>
+            </div>
+            <div class="reveal reveal-delay-1">
+                <div class="chart-box">
+                    <canvas id="lineChart" style="max-height:420px;"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <div class="divider"></div>
+
+    <!-- ===== QA ===== -->
+    <section class="qa-section">
+        <div class="qa-inner">
+            <div class="section-label reveal" style="text-align:center">Q & A</div>
+            <h2 class="section-title reveal" style="text-align:center; margin-bottom:3rem;">よくあるご質問</h2>
+
+            <div class="qa-item reveal">
+                <button class="qa-question" onclick="toggleQA(this)">
+                    <span class="qa-q-num">Q1</span>
+                    <span class="qa-q-text">ITに詳しくない先生も参加できますか？</span>
+                    <span class="qa-arrow">▼</span>
+                </button>
+                <div class="qa-answer">
+                    <strong>技術の高さは問いません。</strong> 「AIをどう経営判断や指導に活かすか」という考え方に主眼を置くため、どなたでも参加可能です。現場の課題感をお持ちの先生方の視点こそが重要です。
+                </div>
+            </div>
+
+            <div class="qa-item reveal">
+                <button class="qa-question" onclick="toggleQA(this)">
+                    <span class="qa-q-num">Q2</span>
+                    <span class="qa-q-text">社労士の仕事がAIに奪われるのではないですか？</span>
+                    <span class="qa-arrow">▼</span>
+                </button>
+                <div class="qa-answer">
+                    <strong>奪われるのは「定型的な作業」のみです。</strong> 36協定の作成補助はAIに任せ、その時間で就業規則の戦略的見直しや経営者への深い助言に集中できます。AIを使いこなす社労士こそが生き残ります。
+                </div>
+            </div>
+
+            <div class="qa-item reveal">
+                <button class="qa-question" onclick="toggleQA(this)">
+                    <span class="qa-q-num">Q3</span>
+                    <span class="qa-q-text">個人情報・守秘義務の問題はどう対処しますか？</span>
+                    <span class="qa-arrow">▼</span>
+                </button>
+                <div class="qa-answer">
+                    <strong>最重要議題として独立した勉強会で扱います。</strong> AIサービスへの入力情報の取り扱い、機密情報漏洩リスクへの対処、守秘義務との整合性について実務的なガイドラインを会員で共同作成します。
+                </div>
+            </div>
+
+            <div class="qa-item reveal">
+                <button class="qa-question" onclick="toggleQA(this)">
+                    <span class="qa-q-num">Q4</span>
+                    <span class="qa-q-text">既存の研修会と何が違うのですか？</span>
+                    <span class="qa-arrow">▼</span>
+                </button>
+                <div class="qa-answer">
+                    <strong>「実践共有型」である点が異なります。</strong> 講師から一方的に学ぶ座学ではなく、会員が自身のPCを持ち寄り実務での活用結果・失敗事例をリアルタイムで共有し合います。正解を教わる場でなく、共に試行錯誤する場です。
+                </div>
+            </div>
+
+            <div class="qa-item reveal">
+                <button class="qa-question" onclick="toggleQA(this)">
+                    <span class="qa-q-num">Q5</span>
+                    <span class="qa-q-text">運営負荷はどのくらいですか？</span>
+                    <span class="qa-arrow">▼</span>
+                </button>
+                <div class="qa-answer">
+                    <strong>最小限に留めます。</strong> 参加者による自主運営を基本とし、支部の公務負担を極力かけない体制を検討します。ファシリテーターは持ち回り、費用も最低限で運営する予定です。
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CTA ===== -->
+    <section class="cta-section" id="cta">
+        <div class="cta-bg"></div>
+        <div class="cta-content">
+            <div class="section-label reveal" style="margin-bottom:1.5rem;">CLOSING</div>
+            <h2 class="cta-title reveal">
+                熊谷支部の未来のために、<br>
+                <span class="gold">今、行動するとき。</span>
+            </h2>
+            <div class="gold-line center reveal"></div>
+            <p class="cta-body reveal">
+                本提案は、会員の皆様の発展と地域企業の成長を支えるための重要な一歩です。<br>
+                寺山支部長をはじめ、執行部の先生方におかれましては、<br>
+                ぜひ前向きなご検討をお願い申し上げます。
+            </p>
+            <div class="cta-box reveal">
+                <p class="cta-proposer">
+                    宛先：支部長 寺山 様 ／ 熊谷支部執行部 先生方一同<br><br>
+                    <strong>提案者<br>埼玉県社会保険労務士会 熊谷支部  新井　健司<br></strong>
+                </p>
+            </div>
+            <a href="AI研究会設置提案書_v2.pdf" download="AI研究会設置提案書_v2.pdf" class="pdf-dl-btn reveal">
+                <span class="pdf-dl-icon">📄</span>
+                <span class="pdf-dl-text">
+                    <span class="pdf-dl-label">提案書PDFをダウンロード</span>
+                    <span class="pdf-dl-sub">AI研究会設置提案書_v2.pdf</span>
+                </span>
+                <span class="pdf-dl-arrow">↓</span>
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 埼玉県社会保険労務士会 熊谷支部 AI研究会設置プロジェクト</p>
+    </footer>
+
+    <script>
+        // ===== SCROLL REVEAL =====
+        const reveals = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('visible');
+                    observer.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        reveals.forEach(el => observer.observe(el));
+
+        // ===== RADAR CHART =====
+        const radarData = {
+            now: {
+                label: '現在',
+                data: [90, 20, 10, 30, 40],
+                bg: 'rgba(148, 163, 184, 0.15)',
+                border: 'rgba(148, 163, 184, 0.8)',
+            },
+            ai: {
+                label: 'AI活用後',
+                data: [30, 80, 75, 90, 85],
+                bg: 'rgba(200, 151, 58, 0.15)',
+                border: 'rgba(200, 151, 58, 0.9)',
+            }
+        };
+
+        let radarChart;
+        function initRadar() {
+            const ctx = document.getElementById('radarChart').getContext('2d');
+            radarChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['手続き業務量', 'コンサルティング', 'データ分析力', '顧客提供価値', '顧問料単価'],
+                    datasets: [{
+                        label: radarData.now.label,
+                        data: radarData.now.data,
+                        backgroundColor: radarData.now.bg,
+                        borderColor: radarData.now.border,
+                        borderWidth: 2,
+                        pointBackgroundColor: radarData.now.border,
+                        pointRadius: 4,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    animation: { duration: 600, easing: 'easeInOutQuart' },
+                    scales: {
+                        r: {
+                            grid: { color: 'rgba(200,151,58,0.1)' },
+                            angleLines: { color: 'rgba(200,151,58,0.1)' },
+                            pointLabels: {
+                                font: { size: 11, family: "'Zen Kaku Gothic New', sans-serif" },
+                                color: '#8892b0'
+                            },
+                            ticks: { display: false },
+                            suggestedMin: 0, suggestedMax: 100
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+        function switchRadar(mode) {
+            const d = radarData[mode];
+            radarChart.data.datasets[0] = {
+                label: d.label,
+                data: d.data,
+                backgroundColor: d.bg,
+                borderColor: d.border,
+                borderWidth: 2,
+                pointBackgroundColor: d.border,
+                pointRadius: 4,
+            };
+            radarChart.update();
+            document.getElementById('btn-now').classList.toggle('active', mode === 'now');
+            document.getElementById('btn-ai').classList.toggle('active', mode === 'ai');
+        }
+
+        // ===== LINE CHART =====
+        function initLine() {
+            const ctx = document.getElementById('lineChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['現在', '1年後', '2年後', '3年後', '4年後', '5年後'],
+                    datasets: [
+                        {
+                            label: '現状維持',
+                            data: [100, 100, 95, 90, 85, 80],
+                            borderColor: 'rgba(148,163,184,0.5)',
+                            backgroundColor: 'transparent',
+                            borderWidth: 2,
+                            borderDash: [6, 4],
+                            tension: 0.4,
+                            pointRadius: 4,
+                            pointBackgroundColor: 'rgba(148,163,184,0.8)',
+                        },
+                        {
+                            label: 'AI研究会参加',
+                            data: [100, 110, 125, 145, 170, 200],
+                            borderColor: '#22c55e',
+                            backgroundColor: 'rgba(34,197,94,0.08)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 5,
+                            pointBackgroundColor: '#22c55e',
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    animation: { duration: 1200, easing: 'easeOutQuart' },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(10,22,40,0.95)',
+                            borderColor: 'rgba(200,151,58,0.3)',
+                            borderWidth: 1,
+                            titleColor: '#c8973a',
+                            bodyColor: '#ccd6f6',
+                            callbacks: {
+                                label: ctx => ctx.dataset.label + ': ' + ctx.raw + '%'
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            grid: { color: 'rgba(200,151,58,0.06)', borderDash: [4,4] },
+                            ticks: { color: '#8892b0', callback: v => v + '%' },
+                            beginAtZero: false,
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#8892b0' }
+                        }
+                    }
+                }
+            });
+        }
+
+        // ===== QA ACCORDION =====
+        function toggleQA(btn) {
+            const answer = btn.nextElementSibling;
+            const arrow = btn.querySelector('.qa-arrow');
+            const isOpen = answer.style.display === 'block';
+            answer.style.display = isOpen ? 'none' : 'block';
+            arrow.classList.toggle('open', !isOpen);
+        }
+
+        // ===== INIT =====
+        window.addEventListener('load', () => {
+            initRadar();
+            initLine();
+        });
+    </script>
+</body>
+</html>
